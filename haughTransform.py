@@ -1,4 +1,4 @@
-
+#non- vectorized
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
@@ -73,8 +73,8 @@ def line_detection_non_vectorized(image, edge_image, num_rhos=180, num_thetas=18
 
 
 if __name__ == "__main__":
-  for i in range(3):
-    image = cv2.imread(f"sample-{i+1}.png")
+  for i in range(1):
+    image = cv2.imread(f"sample-{i}.png")
     edge_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     edge_image = cv2.GaussianBlur(edge_image, (3, 3), 1)
     edge_image = cv2.Canny(edge_image, 100, 200)
