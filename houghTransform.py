@@ -28,20 +28,18 @@ def frange(start, stop=None, step=None):
 def line_detection(image, edge_image, num_rhos=180, num_thetas=180, t_count=500):
   edge_height, edge_width = edge_image.shape[:2]
   edge_height_half, edge_width_half = edge_height/2 , edge_width/2
-  #
+  
   d = math.sqrt(edge_height**2 + edge_width**2)
   dtheta = 180 / num_thetas
   drho = (2 * d) / num_rhos
   
-  #
+  
   thetas = list(range(0,180,int(dtheta)))
-  #thetas = np.arange(0, 180, step=dtheta)
+  
   rhos= list(frange(-d,d,drho))
 
-  ##rhos = np.arange(-d, d, step=drho)
-  
-  #
-  #cos_thetas = np.cos(np.deg2rad(thetas))
+
+ 
   cos_thetas = []
   sin_thetas = []
   for j in range(len(thetas)):
@@ -49,7 +47,7 @@ def line_detection(image, edge_image, num_rhos=180, num_thetas=180, t_count=500)
     sin_thetas.append(math.sin(math.radians(thetas[j])))
   #print(cos_thetas)
   
-  #sin_thetas = np.sin(np.deg2rad(thetas))
+
   #2D Array accumulator representing the Hough Space with dimension (len(rhos), len(thetas))
   accumulator = [ [0]*len(rhos) for _ in range(len(thetas)) ]
   
@@ -87,13 +85,12 @@ def line_detection(image, edge_image, num_rhos=180, num_thetas=180, t_count=500)
           ys.append(rho)
           xs.append(theta)
         subplot3.plot(xs, ys, color="blue", alpha=0.05)
-
+  print(accumulator)
   for y in range(len(accumulator)):
     for x in range(len(accumulator)):
       if accumulator[y][x] > t_count:
         rho = rhos[y]
         theta = thetas[x]
-        
         a = math.cos(math.radians(theta))
         b = math.sin(math.radians(theta))
         x0 = (a * rho) + edge_width_half
