@@ -33,9 +33,9 @@ def line_detection(image, edge_image, num_rhos=180, num_thetas=180, t_count=500)
   dtheta = 180 / num_thetas
   drho = (2 * d) / num_rhos
   
-  
+  #lista de thtetas que es el angulo entre la linea normal y el eje x
   thetas = list(range(0,180,int(dtheta)))
-  
+  #lsita de rhos que es la longitu de una linea normal 
   rhos= list(frange(-d,d,drho))
 
 
@@ -45,10 +45,10 @@ def line_detection(image, edge_image, num_rhos=180, num_thetas=180, t_count=500)
   for j in range(len(thetas)):
     cos_thetas.append(math.cos(math.radians(thetas[j])))
     sin_thetas.append(math.sin(math.radians(thetas[j])))
-  #print(cos_thetas)
+ 
   
 
-  #2D Array accumulator representing the Hough Space with dimension (len(rhos), len(thetas))
+  #Matriz accumulator representando el espacio de Hough con dimensiones de (len(rhos), len(thetas))
   accumulator = [ [0]*len(rhos) for _ in range(len(thetas)) ]
   
   
@@ -60,7 +60,7 @@ def line_detection(image, edge_image, num_rhos=180, num_thetas=180, t_count=500)
   rabs_list = []
  
   
-  #
+  #Seteando los valores de matriz acumulator 
   for y in range(edge_height):
     for x in range(edge_width):
       if edge_image[y][x] != 0:
@@ -77,15 +77,14 @@ def line_detection(image, edge_image, num_rhos=180, num_thetas=180, t_count=500)
               rabs_list=[]
 
           min_value = min(rabs_list2)
-          rho_idx = rabs_list2.index(min_value)
-          #rho_idx = np.argmin(np.abs(rhos - rho))
-          
+          rho_idx = rabs_list2.index(min_value)  
           #print(rho_idx)
           accumulator[rho_idx][theta_idx] += 1
           ys.append(rho)
           xs.append(theta)
         subplot3.plot(xs, ys, color="blue", alpha=0.05)
-  print(accumulator)
+  
+  #Recorriendo matriz de acumulador para comparar el t_count con cada valor de la matriz
   for y in range(len(accumulator)):
     for x in range(len(accumulator)):
       if accumulator[y][x] > t_count:
@@ -138,6 +137,7 @@ if __name__ == "__main__":
 
     #Line detection propio
     line_detection(image, edge_image)
+
     #Line Detection opencv
     lines = cv2.HoughLines(edge_image,1,np.pi/180,200)
     for line in lines:
